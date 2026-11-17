@@ -27,8 +27,8 @@ export function SiteHeader() {
       )}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-18 lg:px-8">
-        <Link href="/" className="rounded-lg" aria-label="ACTUS home">
-          <ActusLogo />
+        <Link href="/" className="shrink-0 rounded-lg" aria-label="ACTUS home">
+          <ActusLogo alt="" className="h-8 xl:h-9" />
         </Link>
 
         <nav aria-label="Main" className="hidden lg:block">
@@ -42,7 +42,8 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <ThemeSwitcher />
+          <ThemeSwitcher group="theme" />
+          <ThemeSwitcher group="palette" />
           <Link href={primaryCta.href} className="btn-base btn-gradient hidden px-4 py-2.5 text-sm sm:inline-flex">
             {primaryCta.label}
           </Link>
@@ -54,7 +55,7 @@ export function SiteHeader() {
 }
 
 const navLinkClass =
-  'inline-flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-ink-muted transition-colors hover:bg-surface hover:text-ink'
+  'inline-flex items-center gap-1 whitespace-nowrap rounded-lg px-3 py-2 text-sm max-xl:px-1.5 max-xl:text-[13px] font-medium text-ink-muted transition-colors hover:bg-surface hover:text-ink'
 
 function DesktopLink({ item }: { item: NavItem }) {
   return (

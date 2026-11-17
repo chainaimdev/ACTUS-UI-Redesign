@@ -11,7 +11,7 @@ export function SiteFooter() {
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 md:py-20 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-4">
-            <ActusLogo inverted />
+            <ActusLogo variant="foundation" tone="reverse" className="h-14 sm:h-16" />
             <p className="mt-4 max-w-sm leading-relaxed text-white/75">{foundationInfo.tagline}</p>
             <div className="mt-8">
               <h2 className="font-heading text-base font-semibold text-white">Sign up for news</h2>

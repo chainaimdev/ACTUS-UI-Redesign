@@ -7,7 +7,9 @@ import { TryIt } from '@/components/home/try-it'
 import { ResourcesStrip } from '@/components/home/resources-strip'
 import { UseCases } from '@/components/home/use-cases'
 import { ProjectsCarousel } from '@/components/home/projects-carousel'
+import { Gallery } from '@/components/home/gallery'
 import { GetInvolved } from '@/components/home/get-involved'
+import { PoweredBy } from '@/components/home/powered-by'
 import { ContactSection } from '@/components/home/contact-section'
 
 export default function HomePage() {
@@ -28,7 +30,9 @@ export default function HomePage() {
         <ResourcesStrip />
         <UseCases />
         <ProjectsCarousel />
+        <Gallery />
         <GetInvolved />
+        <PoweredBy />
         <ContactSection />
       </main>
       <SiteFooter />

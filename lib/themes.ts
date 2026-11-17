@@ -9,14 +9,36 @@
  *   white-blue  ← Actus_white_blue-main     (base project, "Midnight Sovereign")
  *   black-gold  ← actus-black-gold-main     ("Carbon Black → Gunmetal with Gold")
  *   dark-blue   ← actus-bg-dark-blue-main   ("Midnight Navy → Electric Blue")
- *   graphite    ← actus-main                ("Graphite Oxblood")
+ *   graphite    ← actus-graphite-main       ("Graphite Oxblood")
+ *
+ * Extra colour palettes (separate "Colors" dropdown, same layout):
+ *   sandpaper, sage, harbor, plum
  */
 
-export type ThemeId = 'white-blue' | 'black-gold' | 'dark-blue' | 'graphite'
+export type ThemeId =
+  // "Theme" dropdown — the four merged source projects
+  | 'white-blue'
+  | 'black-gold'
+  | 'dark-blue'
+  | 'graphite'
+  // "Colors" dropdown — additional colour palettes on the same layout
+  | 'sandpaper'
+  | 'sage'
+  | 'harbor'
+  | 'plum'
+
+/** Which header dropdown lists the entry. Only one theme/palette is active at a time. */
+export type ThemeGroup = 'theme' | 'palette'
+
+export const THEME_GROUPS: Record<ThemeGroup, { label: string }> = {
+  theme: { label: 'Theme' },
+  palette: { label: 'Colors' },
+}
 
 export type ThemeDefinition = {
   id: ThemeId
   label: string
+  group: ThemeGroup
   /** Native UI (scrollbars, form controls) + toggles the `.dark` class for shadcn primitives. */
   colorScheme: 'light' | 'dark'
   /** Browser chrome colour (<meta name="theme-color">). */
@@ -26,10 +48,14 @@ export type ThemeDefinition = {
 }
 
 export const THEMES: readonly ThemeDefinition[] = [
-  { id: 'white-blue', label: 'White & Blue (Default)', colorScheme: 'light', themeColor: '#ffffff', swatch: ['#ffffff', '#1e40af'] },
-  { id: 'black-gold', label: 'Black & Gold', colorScheme: 'dark', themeColor: '#0a0a0a', swatch: ['#0a0a0a', '#d4af37'] },
-  { id: 'dark-blue', label: 'Dark Blue', colorScheme: 'dark', themeColor: '#050b1a', swatch: ['#050b1a', '#22d3ee'] },
-  { id: 'graphite', label: 'Graphite', colorScheme: 'light', themeColor: '#ffffff', swatch: ['#1c1c1e', '#9b1b30'] },
+  { id: 'white-blue', label: 'White & Blue (Default)', group: 'theme', colorScheme: 'light', themeColor: '#fbfcfd', swatch: ['#fbfcfd', '#002d56'] },
+  { id: 'black-gold', label: 'Black & Gold', group: 'theme', colorScheme: 'dark', themeColor: '#0a0a0a', swatch: ['#0a0a0a', '#d4af37'] },
+  { id: 'dark-blue', label: 'Dark Blue', group: 'theme', colorScheme: 'dark', themeColor: '#050b1a', swatch: ['#050b1a', '#22d3ee'] },
+  { id: 'graphite', label: 'Graphite', group: 'theme', colorScheme: 'light', themeColor: '#ffffff', swatch: ['#1c1c1e', '#9b1b30'] },
+  { id: 'sandpaper', label: 'Sandpaper', group: 'palette', colorScheme: 'light', themeColor: '#f4ede1', swatch: ['#f4ede1', '#8c5530'] },
+  { id: 'sage', label: 'Sage', group: 'palette', colorScheme: 'light', themeColor: '#f4f6f1', swatch: ['#f4f6f1', '#4a7458'] },
+  { id: 'harbor', label: 'Harbor', group: 'palette', colorScheme: 'light', themeColor: '#f2f7f8', swatch: ['#f2f7f8', '#0f6e7e'] },
+  { id: 'plum', label: 'Plum Noir', group: 'palette', colorScheme: 'dark', themeColor: '#140f17', swatch: ['#140f17', '#e2a6a0'] },
 ] as const
 
 export const THEME_IDS = THEMES.map((t) => t.id) as ThemeId[]

@@ -8,12 +8,12 @@ export function Hero() {
     <section aria-labelledby="hero-heading" className="relative overflow-hidden">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-40 right-[-10%] size-[640px] rounded-full opacity-[0.14] blur-3xl"
+        className="pointer-events-none absolute -top-40 right-[-10%] size-[640px] rounded-full opacity-[var(--hero-glow-a)] blur-3xl"
         style={{ background: 'radial-gradient(circle, var(--grad-to), var(--grad-via) 45%, transparent 70%)' }}
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-48 left-[-15%] size-[520px] rounded-full opacity-10 blur-3xl"
+        className="pointer-events-none absolute -bottom-48 left-[-15%] size-[520px] rounded-full opacity-[var(--hero-glow-b)] blur-3xl"
         style={{ background: 'radial-gradient(circle, var(--grad-via), transparent 70%)' }}
       />
 
