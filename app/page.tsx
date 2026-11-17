@@ -5,11 +5,9 @@ import { WhatIs } from '@/components/home/what-is'
 import { Audiences } from '@/components/home/audiences'
 import { TryIt } from '@/components/home/try-it'
 import { ResourcesStrip } from '@/components/home/resources-strip'
-import { UseCases } from '@/components/home/use-cases'
-import { ProjectsCarousel } from '@/components/home/projects-carousel'
+import { ShowcaseHub } from '@/components/home/showcase-hub'
 import { Gallery } from '@/components/home/gallery'
 import { GetInvolved } from '@/components/home/get-involved'
-import { PoweredBy } from '@/components/home/powered-by'
 import { ContactSection } from '@/components/home/contact-section'
 
 export default function HomePage() {
@@ -28,11 +26,9 @@ export default function HomePage() {
         <Audiences />
         <TryIt />
         <ResourcesStrip />
-        <UseCases />
-        <ProjectsCarousel />
+        <ShowcaseHub />
         <Gallery />
         <GetInvolved />
-        <PoweredBy />
         <ContactSection />
       </main>
       <SiteFooter />

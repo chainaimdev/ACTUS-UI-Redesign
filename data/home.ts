@@ -46,6 +46,8 @@ export const hero = {
   subheadline: 'Empowering efficient, transparent and consistent financial ecosystems',
   primaryCta: { label: 'Explore the Standard', href: '/standards' },
   secondaryCta: { label: 'Try Community Edition', href: '/developers/community-edition' },
+  /** One-line caption under the hero illustration. */
+  illustrationCaption: 'From legal terms to cash flows, in one standard language.',
 }
 
 export const whatIsSection = {
@@ -171,12 +173,8 @@ export const contactSection = {
 
 export const foundationInfo = {
   name: 'ACTUS Financial Research Foundation',
-  location: 'Rockville, Maryland, USA',
+  location: '1507 Blue Meadow Road, Rockville, MD 20854 USA',
   tagline: 'Algorithmic Contract Types Unified Standards',
-  /**
-   * Footer copyright year text. Per content notes this is the literal word "Year"
-   * ("© Year ACTUS Financial Research Foundation"). For a live year use:
-   * String(new Date().getFullYear())
-   */
-  copyrightYear: 'Year',
+  /** Footer copyright year: "© 2019 ACTUS Financial Research Foundation". */
+  copyrightYear: '2019',
 }

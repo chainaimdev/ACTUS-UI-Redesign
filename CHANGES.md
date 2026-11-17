@@ -73,3 +73,42 @@ Files: `components/actus-logo.tsx` (renders official PNGs; `variant` + `tone` pr
 - `components/theme-switcher.tsx`: `group` prop; the header renders two dropdowns (Theme, Colors). One skin is active at a time; the other dropdown shows "none selected".
 - `app/globals.css`: `[data-theme='sandpaper' | 'sage' | 'harbor' | 'plum']` palettes (Sandpaper adds a paper grain).
 - `components/site-header.tsx`: second dropdown; from 1024 to 1279px the dropdowns are icon-only and nav links are slightly tighter so everything fits.
+
+---
+
+# v3 — Gallery "Read more" + dedicated /gallery page
+
+- `components/home/gallery.tsx`: adds a "Read more" button under the home-page gallery grid, linking to `/gallery`. Exports `GalleryCard` for reuse; category icons moved to a shared module. Nothing else on the home page changed.
+- `app/gallery/page.tsx` (new): the dedicated Gallery page, which uses the same header, footer and theme system.
+  - A hero with breadcrumb, title, intro and jump links (with counts) to each category.
+  - One section each for Hackathons, Announcements, Previous Winners and Upcoming Events, using the same cards and animations as the home gallery.
+  - A "Back to home" link that returns to the gallery on the home page.
+- `components/gallery/reveal-section.tsx` (new): a section that plays the gallery entrance animation when scrolled into view.
+- `components/gallery/category-icons.ts` (new): category → icon map shared by both pages.
+- `data/gallery.ts`: adds `readMore` (label + href), a `description` per category, and `galleryPage` copy. Both pages read the same `galleryItems`, so they stay in sync.
+
+---
+
+# v4 — hero caption, combined showcase box, curated gallery, cleanup
+
+- **Hero caption** (`components/home/hero.tsx`, `data/home.ts` → `hero.illustrationCaption`): one line under the hero illustration, "From legal terms to cash flows, in one standard language."
+- **One box with three sections** (`components/home/showcase-hub.tsx`, new; `data/showcase.ts`):
+  - ACTUS Use cases: 3 cards, no carousel.
+  - ACTUS Projects: 3 cards, no carousel.
+  - Winners of ACTUS projects: a carousel of 4 SAMPLE winners that slides automatically (`winnersCarousel.intervalMs`, default 4.5s). It pauses on hover or keyboard focus and when the tab is hidden, has a pause/play button, and starts paused for reduced-motion users.
+  - Replaces the separate Use cases section and the Projects carousel on the home page.
+- **Home gallery** (`components/home/gallery.tsx`, `data/gallery.ts` → `gallerySection.homeItemIds`): only 3 cards, with Announcement (Standard update) as the large primary card, then Community news, then Hackathon. The filter buttons are removed. The `/gallery` page is unchanged and still shows all four categories.
+- **Powered by ACTUS section removed** from the home page (`app/page.tsx`). Header, footer and favicon logos are unchanged.
+- **Footer**: "© 2019 ACTUS Financial Research Foundation" (`data/home.ts` → `copyrightYear`).
+- No longer used, safe to delete: `components/home/use-cases.tsx`, `components/home/projects-carousel.tsx`, `components/home/powered-by.tsx`, `data/partners.ts`.
+
+---
+
+# v5 — winners carousel: one winner per slide
+- `components/home/showcase-hub.tsx`: each slide is one full-width winner card (award panel + project details) at every screen size. It auto-advances 1 → 2 → 3 → 4 → 1, with 4 dots. The card shows "Winner N of 4".
+- `data/showcase.ts`: removed the "Hall of fame" eyebrow from the winners heading.
+
+---
+
+# v6 — full foundation address
+- `data/home.ts` → `foundationInfo.location`: "1507 Blue Meadow Road, Rockville, MD 20854 USA" (shown in the Contact section and the footer on both pages).

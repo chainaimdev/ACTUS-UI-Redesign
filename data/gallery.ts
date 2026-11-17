@@ -10,11 +10,15 @@
 
 export type GalleryCategoryId = 'hackathons' | 'announcements' | 'winners' | 'upcoming'
 
-export const galleryCategories: { id: GalleryCategoryId; label: string }[] = [
-  { id: 'hackathons', label: 'Hackathons' },
-  { id: 'announcements', label: 'Announcements' },
-  { id: 'winners', label: 'Previous Winners' },
-  { id: 'upcoming', label: 'Upcoming Events' },
+export const galleryCategories: { id: GalleryCategoryId; label: string; description: string }[] = [
+  { id: 'hackathons', label: 'Hackathons', description: 'Recaps and highlights from ACTUS hackathons.' },
+  {
+    id: 'announcements',
+    label: 'Announcements',
+    description: 'News and updates about the ACTUS standard and its community.',
+  },
+  { id: 'winners', label: 'Previous Winners', description: 'Teams and projects recognised at past ACTUS events.' },
+  { id: 'upcoming', label: 'Upcoming Events', description: 'What is coming up next across the ACTUS community.' },
 ]
 
 export type GalleryItem = {
@@ -35,6 +39,25 @@ export const gallerySection = {
   eyebrow: 'Community',
   title: 'Gallery',
   description: 'Hackathons, announcements, past winners and what is coming next across the ACTUS community.',
+  /** "Read more" button under the home-page gallery → dedicated gallery page. */
+  readMore: { label: 'Read more', href: '/gallery' },
+  /**
+   * Items shown on the home page, in order. The first is the large primary card.
+   * The /gallery page always shows every item.
+   */
+  homeItemIds: ['ann-1', 'ann-2', 'hack-1'],
+}
+
+/** Copy for the dedicated /gallery page. */
+export const galleryPage = {
+  metaTitle: 'Gallery | ACTUS',
+  metaDescription:
+    'Hackathons, announcements, previous winners and upcoming events from the ACTUS community.',
+  eyebrow: 'ACTUS Community',
+  title: 'Gallery',
+  description:
+    'Everything happening around the ACTUS standard in one place: hackathon highlights, announcements, the teams recognised at past events, and what is coming next.',
+  backLabel: 'Back to home',
 }
 
 export const galleryItems: GalleryItem[] = [

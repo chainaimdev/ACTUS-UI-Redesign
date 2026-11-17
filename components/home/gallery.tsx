@@ -3,7 +3,8 @@
 /* eslint-disable @next/next/no-img-element -- images.unoptimized is set in next.config */
 import Link from 'next/link'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { ArrowUpRight, CalendarClock, Code2, Megaphone, Trophy, type LucideIcon } from 'lucide-react'
+import { ArrowRight, ArrowUpRight } from 'lucide-react'
+import { categoryIcon } from '@/components/gallery/category-icons'
 import {
   galleryCategories,
   galleryItems,
@@ -12,15 +13,6 @@ import {
   type GalleryItem,
 } from '@/data/gallery'
 import { cn } from '@/lib/utils'
-
-type Filter = 'all' | GalleryCategoryId
-
-const categoryIcon: Record<GalleryCategoryId, LucideIcon> = {
-  hackathons: Code2,
-  announcements: Megaphone,
-  winners: Trophy,
-  upcoming: CalendarClock,
-}
 
 const categoryLabel = Object.fromEntries(galleryCategories.map((c) => [c.id, c.label])) as Record<
   GalleryCategoryId,
@@ -90,7 +82,7 @@ function TileArt({ seed }: { seed: string }) {
 
 /* ---------- Card ---------- */
 
-function GalleryCard({ item, large }: { item: GalleryItem; large: boolean }) {
+export function GalleryCard({ item, large }: { item: GalleryItem; large: boolean }) {
   const Icon = categoryIcon[item.category]
   const isUpcoming = item.category === 'upcoming'
 
@@ -178,7 +170,6 @@ function GalleryCard({ item, large }: { item: GalleryItem; large: boolean }) {
 /* ---------- Section ---------- */
 
 export function Gallery() {
-  const [filter, setFilter] = useState<Filter>('all')
   const [visible, setVisible] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
 
@@ -198,14 +189,11 @@ export function Gallery() {
     return () => observer.disconnect()
   }, [])
 
-  const items = filter === 'all' ? galleryItems : galleryItems.filter((item) => item.category === filter)
-  const counts = useMemo(() => {
-    const c: Record<string, number> = { all: galleryItems.length }
-    for (const item of galleryItems) c[item.category] = (c[item.category] ?? 0) + 1
-    return c
-  }, [])
-
-  const filters: { id: Filter; label: string }[] = [{ id: 'all', label: 'All' }, ...galleryCategories]
+  // Home page shows a curated subset, in order (first = primary/large card).
+  // The full set lives on the /gallery page.
+  const items = gallerySection.homeItemIds
+    .map((id) => galleryItems.find((item) => item.id === id))
+    .filter((item): item is GalleryItem => Boolean(item))
 
   return (
     <section
@@ -217,73 +205,41 @@ export function Gallery() {
       <div aria-hidden="true" className="gallery-backdrop pointer-events-none absolute inset-0 -z-10" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="gallery-head flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-2xl">
-            <p className="mb-3 text-sm font-semibold tracking-widest text-[var(--gallery-accent)] uppercase">
-              {gallerySection.eyebrow}
-            </p>
-            <h2 id="gallery-heading" className="text-4xl text-white md:text-5xl lg:text-6xl">
-              {gallerySection.title}
-            </h2>
-            <div aria-hidden="true" className="gallery-rule mt-5 h-[3px] w-16 rounded-full" />
-            <p className="mt-5 text-lg leading-relaxed text-pretty text-white/70">{gallerySection.description}</p>
-          </div>
-
-          <div role="group" aria-label="Filter gallery" className="flex flex-wrap gap-2">
-            {filters.map((f) => {
-              const active = filter === f.id
-              return (
-                <button
-                  key={f.id}
-                  type="button"
-                  aria-pressed={active}
-                  onClick={() => setFilter(f.id)}
-                  className={cn(
-                    'inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-all duration-300',
-                    active
-                      ? 'border-white bg-white text-[var(--footer-bg)] shadow-[0_8px_24px_-12px_rgb(255_255_255/0.6)]'
-                      : 'border-white/15 bg-white/5 text-white/75 hover:border-white/35 hover:bg-white/10 hover:text-white',
-                  )}
-                >
-                  {f.label}
-                  <span
-                    className={cn(
-                      'rounded-full px-1.5 text-xs tabular-nums',
-                      active ? 'bg-[var(--footer-bg)]/10' : 'bg-white/10',
-                    )}
-                  >
-                    {counts[f.id] ?? 0}
-                  </span>
-                </button>
-              )
-            })}
-          </div>
+        <div className="gallery-head max-w-2xl">
+          <p className="mb-3 text-sm font-semibold tracking-widest text-[var(--gallery-accent)] uppercase">
+            {gallerySection.eyebrow}
+          </p>
+          <h2 id="gallery-heading" className="text-4xl text-white md:text-5xl lg:text-6xl">
+            {gallerySection.title}
+          </h2>
+          <div aria-hidden="true" className="gallery-rule mt-5 h-[3px] w-16 rounded-full" />
+          <p className="mt-5 text-lg leading-relaxed text-pretty text-white/70">{gallerySection.description}</p>
         </div>
 
-        {/* key forces a remount so the entrance animation replays on filter change */}
-        <ul
-          key={filter}
-          aria-live="polite"
-          className="mt-10 grid auto-rows-[240px] grid-cols-1 gap-4 sm:grid-cols-2 md:mt-14 lg:auto-rows-[230px] lg:grid-cols-4 lg:[grid-auto-flow:dense]"
-        >
+        <ul className="mt-10 grid auto-rows-[240px] grid-cols-1 gap-4 sm:grid-cols-2 md:mt-14 lg:auto-rows-[230px] lg:grid-cols-3">
           {items.map((item, index) => {
-            const large = filter === 'all' ? Boolean(item.featured) : true
+            const primary = index === 0
             return (
               <li
                 key={item.id}
                 style={{ '--i': index } as React.CSSProperties}
-                className={cn(
-                  'gallery-item',
-                  filter === 'all' && item.featured && 'sm:col-span-2 sm:row-span-2',
-                  filter === 'all' && item.wide && 'sm:col-span-2',
-                  filter !== 'all' && 'sm:row-span-2 lg:col-span-2',
-                )}
+                className={cn('gallery-item', primary && 'sm:col-span-2 sm:row-span-2 lg:col-span-2')}
               >
-                <GalleryCard item={item} large={large} />
+                <GalleryCard item={item} large={primary} />
               </li>
             )
           })}
         </ul>
+
+        <div className="gallery-head mt-12 flex justify-center">
+          <Link
+            href={gallerySection.readMore.href}
+            className="group inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-[var(--footer-bg)] shadow-[0_10px_30px_-12px_rgb(255_255_255/0.45)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_40px_-14px_rgb(255_255_255/0.6)]"
+          >
+            {gallerySection.readMore.label}
+            <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+          </Link>
+        </div>
       </div>
     </section>
   )
