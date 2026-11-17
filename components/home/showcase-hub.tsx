@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/carousel'
 import { FadeUp } from '@/components/fade-up'
 import { ShowcaseCard } from '@/components/home/showcase-card'
+import { WinnerBanner } from '@/components/home/winner-banners'
 import {
   projectItems,
   projectsSection,
@@ -45,33 +46,64 @@ function SubHeading({ id, copy }: { id: string; copy: ShowcaseSectionCopy }) {
 
 /* ---------- Winner card ---------- */
 
-function WinnerCard({ winner, index, total }: { winner: WinnerEntry; index: number; total: number }) {
+function WinnerCard({
+  winner,
+  index,
+  total,
+  active,
+}: {
+  winner: WinnerEntry
+  index: number
+  total: number
+  active: boolean
+}) {
   return (
-    <article className="card-brand grid h-full overflow-hidden md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
-      {/* Left: award panel */}
-      <div className="bg-brand-gradient relative flex min-h-44 flex-col justify-between gap-8 p-6 text-on-brand md:p-10">
-        <span className="inline-flex w-fit items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 text-sm font-semibold backdrop-blur-sm">
-          <Trophy className="size-4" aria-hidden="true" />
-          {winner.award}
-        </span>
-        <div>
-          <span className="block font-heading text-6xl leading-none font-bold tabular-nums opacity-40 md:text-8xl" aria-hidden="true">
-            {String(index + 1).padStart(2, '0')}
-          </span>
-          <span className="mt-2 block text-sm font-medium opacity-80">{`Winner ${index + 1} of ${total}`}</span>
+    <article className="relative isolate flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-[var(--footer-bg)] shadow-[0_24px_48px_-28px_rgb(var(--shadow-rgb)/0.45)] lg:block lg:h-[540px]">
+      {/* Banner image: on top for phones/tablets, full-bleed behind the text on desktop */}
+      <div className="relative h-64 shrink-0 overflow-hidden sm:h-80 lg:absolute lg:inset-0 lg:-z-20 lg:h-auto">
+        <div
+          className={cn(
+            'h-full w-full transition-transform duration-[6000ms] ease-out motion-reduce:transition-none',
+            active ? 'scale-[1.04]' : 'scale-100',
+          )}
+        >
+          {winner.image ? (
+            // eslint-disable-next-line @next/next/no-img-element -- images.unoptimized is set in next.config
+            <img src={winner.image} alt="" className="h-full w-full object-cover" />
+          ) : (
+            <WinnerBanner banner={winner.banner} uid={winner.id} />
+          )}
         </div>
+        {/* phones/tablets: soft fade into the text panel */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-[linear-gradient(to_top,var(--footer-bg)_0%,transparent_35%)] lg:hidden"
+        />
       </div>
 
-      {/* Right: project details */}
-      <div className="flex flex-col justify-center p-6 md:p-10">
-        <p className="text-xs font-semibold tracking-widest text-ink-muted uppercase">{winner.edition}</p>
-        <h3 className="mt-3 text-2xl md:text-3xl">{winner.project}</h3>
-        <p className="mt-2 font-semibold text-brand">{winner.team}</p>
-        <p className="mt-4 max-w-xl leading-relaxed text-ink-muted">{winner.summary}</p>
+      {/* desktop: left-side scrim behind the text */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 hidden bg-[linear-gradient(to_right,var(--footer-bg)_0%,var(--footer-bg)_28%,color-mix(in_srgb,var(--footer-bg)_70%,transparent)_38%,transparent_46%)] lg:block"
+      />
+
+      {/* Text */}
+      <div className="flex flex-1 flex-col p-6 text-white sm:p-8 lg:h-full lg:max-w-[38%] lg:justify-center lg:p-12">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 text-sm font-semibold backdrop-blur-sm">
+            <Trophy className="size-4" aria-hidden="true" />
+            {winner.award}
+          </span>
+          <span className="text-sm text-white/70">{`Winner ${index + 1} of ${total}`}</span>
+        </div>
+        <h3 className="mt-5 text-2xl text-white sm:text-3xl lg:text-4xl">{winner.project}</h3>
+        <p className="mt-2 text-lg font-semibold text-[var(--logo-inverted-mid)]">{winner.team}</p>
+        <p className="mt-4 leading-relaxed text-white/80">{winner.summary}</p>
+        <p className="mt-6 text-xs font-semibold tracking-widest text-white/55 uppercase">{winner.edition}</p>
         {winner.href && (
           <Link
             href={winner.href}
-            className="group mt-6 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-brand hover:underline hover:underline-offset-4"
+            className="group mt-6 inline-flex w-fit items-center gap-1.5 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-[var(--footer-bg)]"
           >
             View project
             <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
@@ -152,7 +184,7 @@ function WinnersCarousel({
             className="basis-full pl-5"
             aria-label={`${index + 1} of ${winnerItems.length}`}
           >
-            <WinnerCard winner={winner} index={index} total={winnerItems.length} />
+            <WinnerCard winner={winner} index={index} total={winnerItems.length} active={index === selected} />
           </CarouselItem>
         ))}
       </CarouselContent>

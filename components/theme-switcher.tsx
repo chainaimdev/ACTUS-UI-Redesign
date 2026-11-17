@@ -27,13 +27,13 @@ function Swatch({ colors }: { colors: [string, string] }) {
 export function ThemeSwitcher({
   group = 'theme',
   className,
-  showLabel = true,
+  showLabel = false,
   align = 'end',
 }: {
   /** 'theme' = the four source-project themes; 'palette' = the separate "Colors" dropdown. */
   group?: ThemeGroup
   className?: string
-  /** Show the current selection name next to the icon (only on 2xl screens). */
+  /** Show the current selection name next to the icon (very wide screens only; off by default to keep the header compact). */
   showLabel?: boolean
   align?: 'start' | 'center' | 'end'
 }) {
@@ -50,12 +50,12 @@ export function ThemeSwitcher({
       <DropdownMenuTrigger
         aria-label={`${groupLabel}: ${current ? current.label : 'none selected'}`}
         className={cn(
-          'inline-flex h-10 items-center gap-2 rounded-lg border border-border bg-elevated px-2.5 text-sm font-medium text-ink-muted transition-colors hover:bg-surface hover:text-ink data-popup-open:bg-surface data-popup-open:text-ink',
+          'inline-flex h-10 items-center gap-2 whitespace-nowrap rounded-lg border border-border bg-elevated px-2.5 text-sm font-medium text-ink-muted transition-colors hover:bg-surface hover:text-ink data-popup-open:bg-surface data-popup-open:text-ink',
           className,
         )}
       >
         <Icon className="size-4" aria-hidden="true" />
-        {showLabel && <span className="hidden 2xl:inline">{current ? current.label : groupLabel}</span>}
+        {showLabel && <span className="hidden min-[1800px]:inline">{current ? current.label : groupLabel}</span>}
         {current && (
           <span className="hidden xl:inline-flex">
             <Swatch colors={current.swatch} />

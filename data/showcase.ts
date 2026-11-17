@@ -51,6 +51,10 @@ export const winnersSection: ShowcaseSectionCopy = {
 
 export type WinnerEntry = {
   id: string
+  /** Mock dashboard banner drawn in the active theme's colours (see components/home/winner-banners.tsx). */
+  banner: 'loan' | 'bond' | 'registry' | 'risk'
+  /** Real banner image under /public (e.g. '/winners/team-alpha.jpg'). When set, it replaces the mock banner. */
+  image: string
   /** Award line shown on the badge, e.g. "Winner · Lending". */
   award: string
   project: string
@@ -69,6 +73,8 @@ export type WinnerEntry = {
 export const winnerItems: WinnerEntry[] = [
   {
     id: 'winner-1',
+    banner: 'loan',
+    image: '',
     award: 'Winner · Lending',
     project: 'Loan cash-flow engine',
     team: 'Team Alpha',
@@ -78,6 +84,8 @@ export const winnerItems: WinnerEntry[] = [
   },
   {
     id: 'winner-2',
+    banner: 'bond',
+    image: '',
     award: 'Winner · Fixed income',
     project: 'Bond analytics dashboard',
     team: 'Team Beta',
@@ -87,6 +95,8 @@ export const winnerItems: WinnerEntry[] = [
   },
   {
     id: 'winner-3',
+    banner: 'registry',
+    image: '',
     award: 'Winner · Digital assets',
     project: 'Tokenised contract registry',
     team: 'Team Gamma',
@@ -96,6 +106,8 @@ export const winnerItems: WinnerEntry[] = [
   },
   {
     id: 'winner-4',
+    banner: 'risk',
+    image: '',
     award: 'Winner · Risk',
     project: 'Scenario risk simulator',
     team: 'Team Delta',

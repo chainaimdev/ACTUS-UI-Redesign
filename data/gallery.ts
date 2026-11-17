@@ -57,7 +57,7 @@ export const galleryPage = {
   title: 'Gallery',
   description:
     'Everything happening around the ACTUS standard in one place: hackathon highlights, announcements, the teams recognised at past events, and what is coming next.',
-  backLabel: 'Back to home',
+  backLabel: 'Go back to home page',
 }
 
 export const galleryItems: GalleryItem[] = [

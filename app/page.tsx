@@ -6,7 +6,6 @@ import { Audiences } from '@/components/home/audiences'
 import { TryIt } from '@/components/home/try-it'
 import { ResourcesStrip } from '@/components/home/resources-strip'
 import { ShowcaseHub } from '@/components/home/showcase-hub'
-import { Gallery } from '@/components/home/gallery'
 import { GetInvolved } from '@/components/home/get-involved'
 import { ContactSection } from '@/components/home/contact-section'
 
@@ -27,7 +26,6 @@ export default function HomePage() {
         <TryIt />
         <ResourcesStrip />
         <ShowcaseHub />
-        <Gallery />
         <GetInvolved />
         <ContactSection />
       </main>

@@ -112,3 +112,23 @@ Files: `components/actus-logo.tsx` (renders official PNGs; `variant` + `tone` pr
 
 # v6 — full foundation address
 - `data/home.ts` → `foundationInfo.location`: "1507 Blue Meadow Road, Rockville, MD 20854 USA" (shown in the Contact section and the footer on both pages).
+
+---
+
+# v7 — Gallery only on its own page
+- `app/page.tsx`: Gallery section removed from the home page. The `/gallery` page is unchanged otherwise.
+- `app/gallery/page.tsx`: "Go back to home page" button at the top (beside the breadcrumb) and at the bottom; both go to `/`.
+- `data/gallery.ts`: `galleryPage.backLabel` is now "Go back to home page".
+
+---
+
+# v8 — winners carousel with image banners
+- `components/home/winner-banners.tsx` (new): four MOCK dashboard "screenshots" drawn as SVG in the active theme's colours: loan payment schedule, bond portfolio, on-chain contract registry, and rate-shock risk heat map. All numbers and IDs are sample values.
+- `components/home/showcase-hub.tsx`: each slide is a large banner, with the image full-bleed behind the text on desktop and on top with the text below on phones and tablets. A slow zoom plays on the active slide (off for reduced-motion users). It still shows one winner per slide, auto-sliding 1 → 2 → 3 → 4 → 1.
+- `data/showcase.ts`: each winner has `banner` (which mock to draw) and `image` (a real image path; when set, it replaces the mock).
+
+---
+
+# v9 — hero spacing + header switcher fix
+- `components/home/hero.tsx`: smaller top padding above the hero (desktop 112px → 32px; tablet/mobile slightly smaller too), removing the empty band under the header.
+- `components/theme-switcher.tsx`: the Theme and Colors buttons are compact (icon + colour swatch) at every width, and the button text never wraps. At 1536px and wider the full theme name used to wrap onto 3 lines and squash the header. The menus still list the full names.

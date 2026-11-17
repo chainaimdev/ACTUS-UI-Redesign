@@ -17,7 +17,7 @@ export function Hero() {
         style={{ background: 'radial-gradient(circle, var(--grad-via), transparent 70%)' }}
       />
 
-      <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-14 sm:px-6 md:py-20 lg:grid-cols-2 lg:gap-8 lg:px-8 lg:py-28">
+      <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 pt-10 pb-14 sm:px-6 md:pt-12 md:pb-20 lg:grid-cols-2 lg:gap-8 lg:px-8 lg:pt-8 lg:pb-24">
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 motion-reduce:animate-none">
           <p className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3.5 py-1.5 text-sm font-medium text-ink-muted">
             <span className="bg-brand-gradient size-2 rounded-full" aria-hidden="true" />
