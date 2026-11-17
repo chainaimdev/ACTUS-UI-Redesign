@@ -1,0 +1,334 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Unified ACTUS theme system.
+ *
+ * :root holds the base "White & Blue" (Midnight Sovereign) palette.
+ * Each [data-theme] block below overrides ONLY the brand tokens; every
+ * component reads these tokens, so switching data-theme on <html> reskins
+ * the whole site without touching layout. Register new themes in lib/themes.ts.
+ */
+:root,
+[data-theme='white-blue'] {
+  color-scheme: light;
+
+  /* Brand palette */
+  --bg: #ffffff;
+  --surface: #f8fafc;
+  --elevated: #ffffff; /* cards, menus, inputs, header */
+  --border-color: #e2e8f0;
+  --ink: #0b1f3a;
+  --ink-muted: #475569;
+  --grad-from: #0b1f3a;
+  --grad-via: #1e40af;
+  --grad-to: #0ea5e9;
+  --accent-silver: #94a3b8;
+  --brand-primary: #1e40af;
+
+  /* Theme-dependent values that used to be hardcoded */
+  --on-brand: #ffffff; /* text/icons on gradient fills */
+  --on-brand-hover: #ffffff;
+  --header-bg: rgb(255 255 255 / 0.8);
+  --footer-bg: #0b1f3a;
+  --logo-inverted-mid: #bfdbfe;
+  --shadow-rgb: 11 31 58;
+  --destructive: oklch(0.577 0.245 27.325);
+  /* Headline text gradient; dark-blue overrides with its source's ink → cyan heading gradient. */
+  --text-gradient: var(--brand-gradient);
+}
+
+/* Source: actus-black-gold-main — Carbon Black → Gunmetal with Gold */
+[data-theme='black-gold'] {
+  color-scheme: dark;
+  --bg: #0a0a0a;
+  --surface: #161616;
+  --elevated: #232526;
+  --border-color: #3a3d40;
+  --ink: #f5f5f4;
+  --ink-muted: #a8a29e;
+  --grad-from: #b8860b;
+  --grad-via: #d4af37;
+  --grad-to: #f5d77a;
+  --accent-silver: #6b6e70;
+  --brand-primary: #d4af37;
+  --on-brand: #0a0a0a;
+  --on-brand-hover: #0a0a0a;
+  --header-bg: rgb(10 10 10 / 0.8);
+  --footer-bg: #161616;
+  --logo-inverted-mid: #f5d77a;
+  --shadow-rgb: 0 0 0;
+  --destructive: #f87171;
+}
+
+/* Source: actus-bg-dark-blue-main — Midnight Navy → Electric Blue */
+[data-theme='dark-blue'] {
+  color-scheme: dark;
+  --bg: #050b1a;
+  --surface: #0b1630;
+  --elevated: #12234a;
+  --border-color: #1e3a6e;
+  --ink: #f1f5f9;
+  --ink-muted: #94a3b8;
+  --grad-from: #1e40af;
+  --grad-via: #3b82f6;
+  --grad-to: #22d3ee;
+  --accent-silver: #64748b;
+  --brand-primary: #22d3ee;
+  --on-brand: #f1f5f9;
+  --on-brand-hover: #050b1a; /* matches the source: text darkens as the gradient slides to cyan */
+  --text-gradient: linear-gradient(90deg, #f1f5f9, #22d3ee);
+  --header-bg: rgb(5 11 26 / 0.8);
+  --footer-bg: #0b1630;
+  --logo-inverted-mid: #a5f3fc;
+  --shadow-rgb: 0 0 0;
+  --destructive: #f87171;
+}
+
+/* Source: actus-main — Graphite Oxblood */
+[data-theme='graphite'] {
+  color-scheme: light;
+  --bg: #ffffff;
+  --surface: #fafaf9;
+  --elevated: #ffffff;
+  --border-color: #e7e5e4;
+  --ink: #1c1c1e;
+  --ink-muted: #57534e;
+  --grad-from: #1c1c1e;
+  --grad-via: #4a0e17;
+  --grad-to: #9b1b30;
+  --accent-silver: #c9a227; /* graphite's gold accent; decorative use only (fails AA as text) */
+  --brand-primary: #9b1b30;
+  --on-brand: #ffffff;
+  --on-brand-hover: #ffffff;
+  --header-bg: rgb(255 255 255 / 0.8);
+  --footer-bg: #1c1c1e;
+  --logo-inverted-mid: #e8c9ce;
+  --shadow-rgb: 28 28 30;
+  --destructive: #b91c1c;
+}
+
+/* shadcn tokens mapped onto whichever brand palette is active */
+:root {
+  --brand-gradient: linear-gradient(90deg, var(--grad-from), var(--grad-via), var(--grad-to));
+  --brand-gradient-diagonal: linear-gradient(135deg, var(--grad-from), var(--grad-via) 55%, var(--grad-to));
+
+  --background: var(--bg);
+  --foreground: var(--ink);
+  --card: var(--elevated);
+  --card-foreground: var(--ink);
+  --popover: var(--elevated);
+  --popover-foreground: var(--ink);
+  --primary: var(--brand-primary);
+  --primary-foreground: var(--on-brand);
+  --secondary: var(--surface);
+  --secondary-foreground: var(--ink);
+  --muted: var(--surface);
+  --muted-foreground: var(--ink-muted);
+  --accent: var(--surface);
+  --accent-foreground: var(--ink);
+  --border: var(--border-color);
+  --input: var(--border-color);
+  --ring: var(--brand-primary);
+  --radius: 0.625rem;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-space-grotesk), var(--font-inter), ui-sans-serif, sans-serif;
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-grad-from: var(--grad-from);
+  --color-grad-via: var(--grad-via);
+  --color-grad-to: var(--grad-to);
+  --color-silver: var(--accent-silver);
+  --color-brand: var(--brand-primary);
+  --color-elevated: var(--elevated);
+  --color-on-brand: var(--on-brand);
+  --color-header: var(--header-bg);
+  --color-footer: var(--footer-bg);
+
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background font-sans text-ink;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading font-bold tracking-tight text-balance text-ink;
+  }
+  :focus-visible {
+    outline: 2px solid var(--brand-primary);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility text-gradient {
+  background-image: var(--text-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@utility bg-brand-gradient {
+  background-image: var(--brand-gradient-diagonal);
+}
+
+@utility btn-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  line-height: 1;
+  white-space: nowrap;
+  padding: 0.875rem 1.375rem;
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease,
+    background-position 400ms ease,
+    background-color 200ms ease,
+    color 200ms ease;
+}
+
+/* Gradient sized at 200% so hover can slide it toward the electric-blue end. */
+@utility btn-gradient {
+  color: var(--on-brand);
+  background-image: linear-gradient(90deg, var(--grad-from), var(--grad-via), var(--grad-to));
+  background-size: 200% 100%;
+  background-position: 0% 50%;
+  box-shadow: 0 1px 2px rgb(var(--shadow-rgb) / 0.12);
+  &:hover {
+    background-position: 100% 50%;
+    color: var(--on-brand-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px -8px color-mix(in srgb, var(--grad-via) 45%, transparent);
+  }
+}
+
+@utility btn-outline {
+  color: var(--ink);
+  background-color: var(--bg);
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+  &:hover {
+    background-color: var(--ink);
+    color: var(--bg);
+    transform: translateY(-2px);
+  }
+}
+
+/* Card with an animated gradient top border that grows in on hover. */
+@utility card-brand {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--border-color);
+  background-color: var(--elevated);
+  box-shadow: 0 1px 3px rgb(var(--shadow-rgb) / 0.06);
+  transition:
+    transform 250ms ease,
+    box-shadow 250ms ease;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background-image: var(--brand-gradient);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 350ms ease;
+  }
+  &:hover,
+  &:focus-within {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 32px -16px rgb(var(--shadow-rgb) / 0.25);
+  }
+  &:hover::before,
+  &:focus-within::before {
+    transform: scaleX(1);
+  }
+}
+
+@utility divider-gradient {
+  height: 3px;
+  width: 3.5rem;
+  border-radius: 9999px;
+  background-image: var(--brand-gradient);
+}
+
+@keyframes hero-dash {
+  to {
+    stroke-dashoffset: -48;
+  }
+}
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 700ms ease,
+    transform 700ms ease;
+}
+.fade-up.is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fade-up {
+    opacity: 1;
+    transform: none;
+  }
+}
