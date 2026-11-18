@@ -12,8 +12,10 @@ import {
   type CarouselApi,
 } from '@/components/ui/carousel'
 import { FadeUp } from '@/components/fade-up'
-import { ShowcaseCard } from '@/components/home/showcase-card'
+import { GalleryCard } from '@/components/home/gallery'
+import { galleryItems } from '@/data/gallery'
 import {
+  announcementsSection,
   projectItems,
   projectsSection,
   useCaseItems,
@@ -21,6 +23,7 @@ import {
   winnerItems,
   winnersCarousel,
   winnersSection,
+  type ShowcaseEntry,
   type ShowcaseSectionCopy,
   type WinnerEntry,
 } from '@/data/showcase'
@@ -243,49 +246,107 @@ function WinnersCarousel({
   )
 }
 
+/* ---------- Use cases / Projects: a card with one link per line ---------- */
+
+function LinkListCard({
+  id,
+  copy,
+  items,
+  placeholderLabel,
+}: {
+  id: string
+  copy: ShowcaseSectionCopy
+  items: ShowcaseEntry[]
+  /** Shown for entries with no title yet, e.g. "Use case 1". */
+  placeholderLabel: string
+}) {
+  const headingId = `${id}-heading`
+  return (
+    <div
+      id={id}
+      role="region"
+      aria-labelledby={headingId}
+      className="scroll-mt-24 rounded-2xl border border-border bg-elevated p-6 sm:p-8"
+    >
+      {copy.eyebrow && (
+        <p className="mb-2 text-sm font-semibold tracking-widest text-brand uppercase">{copy.eyebrow}</p>
+      )}
+      <h2 id={headingId} className="text-xl md:text-2xl">
+        {copy.title}
+      </h2>
+      <div className="divider-gradient mt-3" aria-hidden="true" />
+      <ul className="mt-5 divide-y divide-border">
+        {items.map((entry, index) => (
+          <li key={entry.id}>
+            {entry.title && entry.href ? (
+              <Link
+                href={entry.href}
+                className="group flex items-center justify-between gap-4 py-3.5 font-medium text-ink transition-colors hover:text-brand"
+              >
+                <span className="group-hover:underline group-hover:underline-offset-4">{entry.title}</span>
+                <ArrowRight
+                  className="size-4 shrink-0 text-ink-muted transition-transform group-hover:translate-x-1 group-hover:text-brand"
+                  aria-hidden="true"
+                />
+              </Link>
+            ) : (
+              // Not filled in yet (data/showcase.ts): muted, not clickable.
+              <p className="py-3.5 text-ink-muted">{entry.title || `${placeholderLabel} ${index + 1}`}</p>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
 /* ---------- The combined box ---------- */
 
+// Real announcements only (with an image); empty placeholders are skipped.
+const announcementItems = galleryItems.filter((item) => item.category === 'announcements' && item.image)
+
 export function ShowcaseHub() {
+  const hasAnnouncements = announcementItems.length > 0
   return (
     <section id="showcase" aria-label="ACTUS use cases, projects and winners" className="scroll-mt-20 bg-surface py-12 md:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <FadeUp>
           <div className="rounded-3xl border border-border bg-elevated shadow-[0_1px_3px_rgb(var(--shadow-rgb)/0.06),0_24px_48px_-32px_rgb(var(--shadow-rgb)/0.25)]">
-            <div id="use-cases" aria-labelledby="use-cases-heading" role="region" className="scroll-mt-24 p-6 sm:p-8 lg:p-12">
-              <SubHeading id="use-cases-heading" copy={useCasesSection} />
-              <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {useCaseItems.map((entry, index) => (
-                  <li key={entry.id}>
-                    <ShowcaseCard entry={entry} index={index} placeholderLabel="Use case" />
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {/* Announcements, on top */}
+            {hasAnnouncements && (
+              <div
+                id="announcements"
+                aria-labelledby="announcements-heading"
+                role="region"
+                className="scroll-mt-24 border-b border-border p-6 sm:p-8 lg:p-12"
+              >
+                <SubHeading id="announcements-heading" copy={announcementsSection} />
+                <ul className="space-y-6">
+                  {announcementItems.map((item) => (
+                    // Fixed height from tablet up so the square poster sits beside its text.
+                    <li key={item.id} className="sm:h-[320px] lg:h-[360px]">
+                      <GalleryCard item={item} large />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
-            <div
-              id="projects"
-              aria-labelledby="projects-heading"
-              role="region"
-              className="scroll-mt-24 border-t border-border p-6 sm:p-8 lg:p-12"
-            >
-              <SubHeading id="projects-heading" copy={projectsSection} />
-              <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {projectItems.map((entry, index) => (
-                  <li key={entry.id}>
-                    <ShowcaseCard entry={entry} index={index} placeholderLabel="Project" />
-                  </li>
-                ))}
-              </ul>
-            </div>
-
+            {/* Use Case Competition Winners carousel */}
             <div
               id="winners"
               aria-labelledby="winners-heading"
               role="region"
-              className="scroll-mt-24 rounded-b-3xl border-t border-border bg-surface/60 p-6 sm:p-8 lg:p-12"
+              className={cn('scroll-mt-24 bg-surface/60 p-6 sm:p-8 lg:p-12', !hasAnnouncements && 'rounded-t-3xl')}
             >
               <SubHeading id="winners-heading" copy={winnersSection} />
               <WinnersCarousel />
+            </div>
+
+            {/* Use cases and Projects side by side (stacked on phones), one link per line */}
+            <div className="grid gap-6 border-t border-border p-6 sm:p-8 lg:grid-cols-2 lg:p-12">
+              <LinkListCard id="use-cases" copy={useCasesSection} items={useCaseItems} placeholderLabel="Use case" />
+              <LinkListCard id="projects" copy={projectsSection} items={projectItems} placeholderLabel="Project" />
             </div>
           </div>
         </FadeUp>

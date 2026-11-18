@@ -49,7 +49,7 @@ export const mainNav: NavItem[] = [
       { label: 'Events', href: '/work-groups/events' },
     ],
   },
-  { label: 'Membership', href: '/membership' },
+  { label: 'Gallery', href: '/gallery' },
   { label: 'News', href: '/news' },
   { label: 'Blog', href: '/blog' },
   { label: 'Contact', href: '#contact' },

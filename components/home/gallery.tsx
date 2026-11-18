@@ -14,10 +14,15 @@ import {
 } from '@/data/gallery'
 import { cn } from '@/lib/utils'
 
-const categoryLabel = Object.fromEntries(galleryCategories.map((c) => [c.id, c.label])) as Record<
-  GalleryCategoryId,
-  string
->
+/** Tag names for every category, including ones hidden from the /gallery page (e.g. Announcements). */
+const categoryLabel: Record<GalleryCategoryId, string> = {
+  announcements: 'Announcements',
+  hackathons: 'Use Case Competition 2026',
+  community: 'Community News',
+  winners: 'Previous Winners',
+  upcoming: 'Upcoming Events',
+  ...Object.fromEntries(galleryCategories.map((c) => [c.id, c.label])),
+}
 
 /* ---------- Generated ACTUS tile artwork (used when an item has no image) ---------- */
 

@@ -22,7 +22,6 @@ export type ShowcaseSectionCopy = {
 }
 
 export const useCasesSection: ShowcaseSectionCopy = {
-  eyebrow: 'In practice',
   title: 'ACTUS Use cases',
 }
 
@@ -33,7 +32,6 @@ export const useCaseItems: ShowcaseEntry[] = [
 ]
 
 export const projectsSection: ShowcaseSectionCopy = {
-  eyebrow: 'Community',
   title: 'ACTUS Projects',
 }
 
@@ -45,8 +43,13 @@ export const projectItems: ShowcaseEntry[] = [
 
 /* ---------- Winners carousel (inside the same box, below projects) ---------- */
 
+/** Announcements, shown at the top of the box. Items come from data/gallery.ts (category 'announcements', with an image). */
+export const announcementsSection: ShowcaseSectionCopy = {
+  title: 'Announcements',
+}
+
 export const winnersSection: ShowcaseSectionCopy = {
-  title: 'Winners of ACTUS projects',
+  title: 'Use Case Competition Winners',
 }
 
 export type WinnerGroup = {
