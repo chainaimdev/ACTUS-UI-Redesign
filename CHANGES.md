@@ -132,3 +132,20 @@ Files: `components/actus-logo.tsx` (renders official PNGs; `variant` + `tone` pr
 # v9 — hero spacing + header switcher fix
 - `components/home/hero.tsx`: smaller top padding above the hero (desktop 112px → 32px; tablet/mobile slightly smaller too), removing the empty band under the header.
 - `components/theme-switcher.tsx`: the Theme and Colors buttons are compact (icon + colour swatch) at every width, and the button text never wraps. At 1536px and wider the full theme name used to wrap onto 3 lines and squash the header. The menus still list the full names.
+
+---
+
+# v10 — hero illustration picker
+- `components/home/hero-illustrations-extra.tsx` (new): four more hero illustrations in the same style, all theme-aware: Contract types, Event timeline, Risk scenarios, Shared ecosystem.
+- `components/home/hero-visual.tsx` (new): the hero picture and its caption, with a small "View:" dropdown above it on the right. Choosing an option fades in the new picture and caption. The choice is remembered in the browser (`actus-hero-illustration`).
+- `components/home/hero.tsx`: renders `<HeroVisual />` instead of the fixed picture.
+- `data/home.ts`: `heroIllustrations` list (id, label, caption). The first entry is the default ("Contract to cash flows", the original picture).
+- PNG previews of the four new pictures: `Actus-UI-Redesign/hero-images/`.
+
+---
+
+# v11 — two more themes in the Theme dropdown
+- `lib/themes.ts`: adds **Ocean Light** (`ocean-light`) and **Ivory & Navy** (`ivory-navy`) to the Theme dropdown (group `theme`), after Graphite.
+- `app/globals.css`: their palettes.
+  - Ocean Light: cool off-white with sea-blue accents (#0b4a6f → #0284c7 → #38bdf8).
+  - Ivory & Navy: warm ivory paper with deep navy ink and a muted brass accent (#0f1d3a → #1c2f5e → #2f4a8a).
