@@ -58,9 +58,9 @@ function WinnerCard({
   active: boolean
 }) {
   return (
-    <article className="relative isolate flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-[var(--footer-bg)] shadow-[0_24px_48px_-28px_rgb(var(--shadow-rgb)/0.45)] lg:block lg:h-[540px]">
+    <article className="relative isolate flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-[var(--footer-bg)] shadow-[0_24px_48px_-28px_rgb(var(--shadow-rgb)/0.45)] lg:block lg:h-[440px]">
       {/* Banner image: on top for phones/tablets, full-bleed behind the text on desktop */}
-      <div className="relative h-64 shrink-0 overflow-hidden sm:h-80 lg:absolute lg:inset-0 lg:-z-20 lg:h-auto">
+      <div className="relative h-48 shrink-0 overflow-hidden sm:h-64 lg:absolute lg:inset-0 lg:-z-20 lg:h-auto">
         <div
           className={cn(
             'h-full w-full transition-transform duration-[6000ms] ease-out motion-reduce:transition-none',
@@ -96,7 +96,7 @@ function WinnerCard({
           </span>
           <span className="text-sm text-white/70">{`Winner ${index + 1} of ${total}`}</span>
         </div>
-        <h3 className="mt-5 text-2xl text-white sm:text-3xl lg:text-4xl">{winner.project}</h3>
+        <h3 className="mt-5 text-2xl text-white sm:text-3xl lg:text-3xl">{winner.project}</h3>
         <p className="mt-2 text-lg font-semibold text-[var(--logo-inverted-mid)]">{winner.team}</p>
         <p className="mt-4 leading-relaxed text-white/80">{winner.summary}</p>
         <p className="mt-6 text-xs font-semibold tracking-widest text-white/55 uppercase">{winner.edition}</p>

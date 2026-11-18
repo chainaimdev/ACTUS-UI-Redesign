@@ -52,9 +52,6 @@ export type ThemeDefinition = {
 
 export const THEMES: readonly ThemeDefinition[] = [
   { id: 'white-blue', label: 'White & Blue (Default)', group: 'theme', colorScheme: 'light', themeColor: '#fbfcfd', swatch: ['#fbfcfd', '#002d56'] },
-  { id: 'black-gold', label: 'Black & Gold', group: 'theme', colorScheme: 'dark', themeColor: '#0a0a0a', swatch: ['#0a0a0a', '#d4af37'] },
-  { id: 'dark-blue', label: 'Dark Blue', group: 'theme', colorScheme: 'dark', themeColor: '#050b1a', swatch: ['#050b1a', '#22d3ee'] },
-  { id: 'graphite', label: 'Graphite', group: 'theme', colorScheme: 'light', themeColor: '#ffffff', swatch: ['#1c1c1e', '#9b1b30'] },
   { id: 'ocean-light', label: 'Ocean Light', group: 'theme', colorScheme: 'light', themeColor: '#f4f9fb', swatch: ['#f4f9fb', '#0284c7'] },
   { id: 'ivory-navy', label: 'Ivory & Navy', group: 'theme', colorScheme: 'light', themeColor: '#fbf8f1', swatch: ['#fbf8f1', '#14213d'] },
   { id: 'sandpaper', label: 'Sandpaper', group: 'palette', colorScheme: 'light', themeColor: '#f4ede1', swatch: ['#f4ede1', '#8c5530'] },
