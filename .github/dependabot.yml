@@ -1,0 +1,38 @@
+# Dependabot configuration
+# Opens pull requests for outdated or vulnerable dependencies.
+# Costs no AI credits - this is plain GitHub infrastructure.
+version: 2
+
+updates:
+  # ---- Application dependencies (npm / pnpm) ----
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Asia/Kolkata"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
+
+  # ---- GitHub Actions used by workflows ----
+  # NOTE: gh-aw pins its own actions inside the generated .lock.yml files.
+  # If Dependabot opens noisy PRs against those, remove this second block
+  # and use `gh aw update` for gh-aw's actions instead.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Asia/Kolkata"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "chore(actions)"

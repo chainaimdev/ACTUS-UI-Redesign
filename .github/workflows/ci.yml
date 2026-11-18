@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      skip_typecheck:
+        description: "Skip the TypeScript check and only run the build"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+# Cancel an in-flight run when a newer commit arrives on the same ref,
+# so a PR that is pushed to repeatedly does not burn Actions minutes.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Typecheck and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      # Reads the pnpm version from the "packageManager" field in package.json
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: TypeScript check
+        if: ${{ inputs.skip_typecheck != true }}
+        run: pnpm exec tsc --noEmit
+
+      - name: Build
+        run: pnpm build
