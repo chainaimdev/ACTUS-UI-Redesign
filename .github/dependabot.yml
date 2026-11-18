@@ -32,23 +32,17 @@ updates:
         update-types:
           - "version-update:semver-major"
 
-  # ---- GitHub Actions used by workflows ----
-  # gh-aw pins its own actions inside the generated .lock.yml and refreshes
-  # them with `gh aw update`. This block only covers hand-written workflows
-  # such as ci.yml. If it ever opens a PR against a .lock.yml, delete it.
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "06:00"
-      timezone: "Asia/Kolkata"
-    open-pull-requests-limit: 1
-    labels:
-      - "dependencies"
-    commit-message:
-      prefix: "chore(actions)"
-    ignore:
-      - dependency-name: "*"
-        update-types:
-          - "version-update:semver-major"
+# ---------------------------------------------------------------------------
+# NOTE: the "github-actions" ecosystem is deliberately NOT configured here.
+#
+# gh-aw generates .github/workflows/*.lock.yml with every action pinned to a
+# SHA, and regenerates it on each `gh aw compile`. Dependabot cannot tell the
+# generated file from a hand-written one, so it opens PRs against the
+# .lock.yml that the next compile silently overwrites. (Observed: PR #10 on
+# ACTUS-UI-Redesign, actions/download-artifact 8.0.1 -> 8.0.2.)
+#
+# Instead:
+#   - gh-aw's own actions  -> `gh aw update`, then `gh aw compile`
+#   - hand-written ci.yml  -> review actions/checkout and actions/setup-node
+#                             manually, roughly once a quarter
+# ---------------------------------------------------------------------------
