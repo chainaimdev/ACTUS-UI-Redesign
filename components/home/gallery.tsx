@@ -82,9 +82,72 @@ function TileArt({ seed }: { seed: string }) {
 
 /* ---------- Card ---------- */
 
+/** Links to other sites (e.g. LinkedIn posts) open in a new tab. */
+function isExternalUrl(href: string) {
+  return /^https?:\/\//i.test(href)
+}
+
 export function GalleryCard({ item, large }: { item: GalleryItem; large: boolean }) {
   const Icon = categoryIcon[item.category]
   const isUpcoming = item.category === 'upcoming'
+
+  // Poster layout: the whole square poster beside the title (nothing cropped or covered).
+  if (item.poster && item.image) {
+    const posterInner = (
+      <>
+        <div className="mx-auto aspect-square w-full max-w-[22rem] shrink-0 overflow-hidden sm:mx-0 sm:h-full sm:w-auto sm:max-w-none">
+          <img
+            src={item.image}
+            alt={item.imageAlt ?? ''}
+            className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+            loading="lazy"
+          />
+        </div>
+        <div className="flex min-w-0 flex-1 flex-col justify-center p-5 md:p-7 lg:p-10">
+          <span className="hidden w-fit items-center gap-1.5 rounded-full border border-white/20 bg-black/25 px-2.5 py-1 text-xs font-medium text-white md:inline-flex">
+            <Icon className="size-3.5" aria-hidden="true" />
+            {categoryLabel[item.category]}
+          </span>
+          <p className="text-xs font-semibold tracking-wider text-white/70 uppercase md:mt-4 lg:mt-6">{item.meta}</p>
+          <h3 className="mt-2 font-heading text-xl font-bold tracking-tight text-balance text-white md:text-2xl lg:text-3xl">
+            {item.title}
+          </h3>
+          <p className="mt-3 line-clamp-2 max-w-md text-sm leading-relaxed text-white/75 md:line-clamp-3 lg:line-clamp-none lg:text-base">{item.description}</p>
+          {item.href && (
+            <span className="mt-5 inline-flex w-fit items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[var(--footer-bg)] transition-transform duration-300 group-hover:-translate-y-0.5">
+              View announcement
+              <ArrowUpRight className="size-4" aria-hidden="true" />
+            </span>
+          )}
+        </div>
+      </>
+    )
+    const posterClass =
+      'gallery-card group relative isolate flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 shadow-[0_20px_40px_-24px_rgb(0_0_0/0.6)] transition-[transform,border-color] duration-500 hover:-translate-y-1 hover:border-white/25 sm:flex-row'
+    if (item.href && isExternalUrl(item.href)) {
+      return (
+        <a
+          href={item.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${item.title} (opens in a new tab)`}
+          className={posterClass}
+          style={{ background: 'var(--gallery-card-bg)' }}
+        >
+          {posterInner}
+        </a>
+      )
+    }
+    return item.href ? (
+      <Link href={item.href} className={posterClass} style={{ background: 'var(--gallery-card-bg)' }}>
+        {posterInner}
+      </Link>
+    ) : (
+      <article className={posterClass} style={{ background: 'var(--gallery-card-bg)' }}>
+        {posterInner}
+      </article>
+    )
+  }
 
   const inner = (
     <>

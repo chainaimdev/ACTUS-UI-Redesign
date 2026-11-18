@@ -13,7 +13,6 @@ import {
 } from '@/components/ui/carousel'
 import { FadeUp } from '@/components/fade-up'
 import { ShowcaseCard } from '@/components/home/showcase-card'
-import { WinnerBanner } from '@/components/home/winner-banners'
 import {
   projectItems,
   projectsSection,
@@ -58,56 +57,50 @@ function WinnerCard({
   active: boolean
 }) {
   return (
-    <article className="relative isolate flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-[var(--footer-bg)] shadow-[0_24px_48px_-28px_rgb(var(--shadow-rgb)/0.45)] lg:block lg:h-[440px]">
-      {/* Banner image: on top for phones/tablets, full-bleed behind the text on desktop */}
-      <div className="relative h-48 shrink-0 overflow-hidden sm:h-64 lg:absolute lg:inset-0 lg:-z-20 lg:h-auto">
+    <article className="relative isolate flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-[var(--footer-bg)] shadow-[0_24px_48px_-28px_rgb(var(--shadow-rgb)/0.45)] lg:h-[440px] lg:flex-row">
+      {/* Official winner poster, shown whole (square), with a slow zoom on the active slide */}
+      <div className="relative aspect-square w-full shrink-0 overflow-hidden lg:h-full lg:w-auto">
         <div
           className={cn(
             'h-full w-full transition-transform duration-[6000ms] ease-out motion-reduce:transition-none',
-            active ? 'scale-[1.04]' : 'scale-100',
+            active ? 'scale-[1.03]' : 'scale-100',
           )}
         >
-          {winner.image ? (
-            // eslint-disable-next-line @next/next/no-img-element -- images.unoptimized is set in next.config
-            <img src={winner.image} alt="" className="h-full w-full object-cover" />
-          ) : (
-            <WinnerBanner banner={winner.banner} uid={winner.id} />
-          )}
+          {/* eslint-disable-next-line @next/next/no-img-element -- images.unoptimized is set in next.config */}
+          <img src={winner.image} alt={winner.imageAlt} className="h-full w-full object-cover" loading="lazy" />
         </div>
-        {/* phones/tablets: soft fade into the text panel */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-[linear-gradient(to_top,var(--footer-bg)_0%,transparent_35%)] lg:hidden"
-        />
       </div>
 
-      {/* desktop: left-side scrim behind the text */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 -z-10 hidden bg-[linear-gradient(to_right,var(--footer-bg)_0%,var(--footer-bg)_28%,color-mix(in_srgb,var(--footer-bg)_70%,transparent)_38%,transparent_46%)] lg:block"
-      />
-
-      {/* Text */}
-      <div className="flex flex-1 flex-col p-6 text-white sm:p-8 lg:h-full lg:max-w-[38%] lg:justify-center lg:p-12">
+      {/* Details (same information as the poster, readable and searchable) */}
+      <div className="flex flex-1 flex-col justify-start p-6 text-white sm:p-8 lg:justify-center lg:p-10">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 text-sm font-semibold backdrop-blur-sm">
+          <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 text-sm font-semibold">
             <Trophy className="size-4" aria-hidden="true" />
             {winner.award}
           </span>
           <span className="text-sm text-white/70">{`Winner ${index + 1} of ${total}`}</span>
         </div>
-        <h3 className="mt-5 text-2xl text-white sm:text-3xl lg:text-3xl">{winner.project}</h3>
-        <p className="mt-2 text-lg font-semibold text-[var(--logo-inverted-mid)]">{winner.team}</p>
-        <p className="mt-4 leading-relaxed text-white/80">{winner.summary}</p>
-        <p className="mt-6 text-xs font-semibold tracking-widest text-white/55 uppercase">{winner.edition}</p>
+
+        <ul className="mt-6 space-y-5">
+          {winner.groups.map((group) => (
+            <li key={group.names} className="border-l-2 border-[var(--logo-inverted-mid)]/60 pl-4">
+              <p className="text-xs font-semibold tracking-widest text-[var(--logo-inverted-mid)] uppercase">
+                {group.country}
+              </p>
+              <h3 className="mt-1 text-lg leading-snug text-white sm:text-xl">{group.names}</h3>
+              <p className="mt-1 text-sm text-white/70">{group.track}</p>
+            </li>
+          ))}
+        </ul>
+
+        <p className="mt-6 text-xs font-semibold tracking-widest text-white/50 uppercase">{winner.edition}</p>
         {winner.href && (
           <Link
             href={winner.href}
             className="group mt-6 inline-flex w-fit items-center gap-1.5 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-[var(--footer-bg)]"
           >
-            View project
+            Read more
             <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
-            <span className="sr-only">{`: ${winner.project}`}</span>
           </Link>
         )}
       </div>

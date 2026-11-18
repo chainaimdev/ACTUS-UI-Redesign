@@ -33,6 +33,10 @@ export type GalleryItem = {
   meta: string
   image: string
   href: string
+  /** Alt text for `image` (posters with text in them should describe it). */
+  imageAlt?: string
+  /** Square poster with text in it: shown whole beside the title instead of as a cropped background. */
+  poster?: boolean
   /** Layout hints for the "All" view: featured = 2×2 tile, wide = 2×1 tile. */
   featured?: boolean
   wide?: boolean
@@ -91,6 +95,20 @@ export const galleryItems: GalleryItem[] = [
     meta: 'Past edition',
     image: '',
     href: '',
+  },
+  {
+    id: 'ann-winners',
+    category: 'announcements',
+    title: 'Use Case Competition winners announced',
+    description:
+      'Results of the ACTUS Algorithmic Financial Contracts Use Case Competition, powered by apix. Where every contract speaks the same language.',
+    meta: 'Winners announcement',
+    image: '/gallery/competition-winners-announcement.jpg',
+    imageAlt:
+      'ACTUS Algorithmic Financial Contracts Use Case Competition: Winners Announcement poster, powered by apix',
+    // LinkedIn post: "Congratulations to the winners of ACTUS" (opens in a new tab)
+    href: 'https://lnkd.in/p/gU85yJkn',
+    poster: true,
   },
   {
     id: 'ann-1',
