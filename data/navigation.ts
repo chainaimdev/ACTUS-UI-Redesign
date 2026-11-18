@@ -12,7 +12,7 @@ export type FooterColumn = {
   links: NavLink[]
 }
 
-export const primaryCta: NavLink = { label: 'Try ACTUS', href: '/standards/demo-app' }
+export const primaryCta: NavLink = { label: 'Explore ACTUS', href: '/standards/demo-app' }
 
 export const mainNav: NavItem[] = [
   {
