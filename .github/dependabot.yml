@@ -1,6 +1,14 @@
-# Dependabot configuration
-# Opens pull requests for outdated or vulnerable dependencies.
-# Costs no AI credits - this is plain GitHub infrastructure.
+# Dependabot configuration for ACTUS-UI-Redesign
+#
+# Costs no AI credits - plain GitHub infrastructure.
+#
+# Deliberate choices:
+#  - Major version bumps are IGNORED. They are breaking by definition and
+#    need a human to plan them, not an automatic PR. Review majors manually.
+#  - Low PR limits. Dependency PRs each trigger CI, which costs Actions
+#    minutes. Two open at a time is reviewable; eight is noise.
+#  - CI still runs on these PRs on purpose: the whole point is to learn
+#    whether a bump breaks the build before it reaches main.
 version: 2
 
 updates:
@@ -12,17 +20,22 @@ updates:
       day: "monday"
       time: "06:00"
       timezone: "Asia/Kolkata"
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 2
     labels:
       - "dependencies"
     commit-message:
       prefix: "chore(deps)"
       prefix-development: "chore(deps-dev)"
+    ignore:
+      # No automatic major-version bumps for anything.
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
 
   # ---- GitHub Actions used by workflows ----
-  # NOTE: gh-aw pins its own actions inside the generated .lock.yml files.
-  # If Dependabot opens noisy PRs against those, remove this second block
-  # and use `gh aw update` for gh-aw's actions instead.
+  # gh-aw pins its own actions inside the generated .lock.yml and refreshes
+  # them with `gh aw update`. This block only covers hand-written workflows
+  # such as ci.yml. If it ever opens a PR against a .lock.yml, delete it.
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -30,9 +43,12 @@ updates:
       day: "monday"
       time: "06:00"
       timezone: "Asia/Kolkata"
-    open-pull-requests-limit: 3
+    open-pull-requests-limit: 1
     labels:
       - "dependencies"
-      - "github-actions"
     commit-message:
       prefix: "chore(actions)"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
