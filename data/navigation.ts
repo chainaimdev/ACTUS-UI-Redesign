@@ -12,7 +12,15 @@ export type FooterColumn = {
   links: NavLink[]
 }
 
-export const primaryCta: NavLink = { label: 'Try ACTUS', href: '/standards/demo-app' }
+/** Header button; opens a small dropdown with these options. Links starting with http open in a new tab. */
+export const primaryCta: NavItem = {
+  label: 'Explore ACTUS',
+  href: '/standards/demo-app',
+  children: [
+    { label: 'Learn ACTUS', href: 'https://documentation.actusfrf.org/docs/quickstart' },
+    { label: 'Setup ACTUS', href: '/developers/community-edition' },
+  ],
+}
 
 export const mainNav: NavItem[] = [
   {
@@ -49,7 +57,7 @@ export const mainNav: NavItem[] = [
       { label: 'Events', href: '/work-groups/events' },
     ],
   },
-  { label: 'Membership', href: '/membership' },
+  { label: 'Gallery', href: '/gallery' },
   { label: 'News', href: '/news' },
   { label: 'Blog', href: '/blog' },
   { label: 'Contact', href: '#contact' },

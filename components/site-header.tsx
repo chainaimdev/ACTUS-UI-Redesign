@@ -5,6 +5,7 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { ChevronDown, Menu } from 'lucide-react'
 import { ActusLogo } from '@/components/actus-logo'
 import { ThemeSwitcher } from '@/components/theme-switcher'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Sheet, SheetContent, SheetTitle, SheetTrigger, SheetClose } from '@/components/ui/sheet'
 import { mainNav, primaryCta, type NavItem } from '@/data/navigation'
 import { cn } from '@/lib/utils'
@@ -44,13 +45,42 @@ export function SiteHeader() {
         <div className="flex items-center gap-2">
           <ThemeSwitcher group="theme" />
           <ThemeSwitcher group="palette" />
-          <Link href={primaryCta.href} className="btn-base btn-gradient hidden px-4 py-2.5 text-sm sm:inline-flex">
-            {primaryCta.label}
-          </Link>
+          <ExploreMenu />
           <MobileMenu />
         </div>
       </div>
     </header>
+  )
+}
+
+const isExternal = (href: string) => /^https?:\/\//i.test(href)
+
+/** "Explore ACTUS" header button with a small dropdown (Learn ACTUS, Setup ACTUS). */
+function ExploreMenu() {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger className="btn-base btn-gradient hidden px-4 py-2.5 text-sm sm:inline-flex">
+        {primaryCta.label}
+        <ChevronDown className="size-3.5" aria-hidden="true" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" sideOffset={8} className="w-48 border border-border p-1.5 shadow-xl">
+        {primaryCta.children?.map((child) => (
+          <DropdownMenuItem
+            key={child.href}
+            className="cursor-pointer px-2.5 py-2"
+            render={
+              isExternal(child.href) ? (
+                <a href={child.href} target="_blank" rel="noopener noreferrer" />
+              ) : (
+                <Link href={child.href} />
+              )
+            }
+          >
+            {child.label}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }
 
@@ -168,9 +198,26 @@ function MobileMenu() {
               </li>
             ))}
           </ul>
-          <Link href={primaryCta.href} className="btn-base btn-gradient mt-6 w-full">
-            {primaryCta.label}
-          </Link>
+          <p className="mt-6 px-2 text-xs font-semibold tracking-wider text-ink-muted uppercase">{primaryCta.label}</p>
+          <div className="mt-2 flex flex-col gap-2">
+            {primaryCta.children?.map((child) =>
+              isExternal(child.href) ? (
+                <a
+                  key={child.href}
+                  href={child.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-base btn-gradient w-full"
+                >
+                  {child.label}
+                </a>
+              ) : (
+                <SheetClose key={child.href} render={<Link href={child.href} />} className="btn-base btn-gradient w-full">
+                  {child.label}
+                </SheetClose>
+              ),
+            )}
+          </div>
         </nav>
       </SheetContent>
     </Sheet>

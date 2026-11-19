@@ -149,3 +149,18 @@ Files: `components/actus-logo.tsx` (renders official PNGs; `variant` + `tone` pr
 - `app/globals.css`: their palettes.
   - Ocean Light: cool off-white with sea-blue accents (#0b4a6f → #0284c7 → #38bdf8).
   - Ivory & Navy: warm ivory paper with deep navy ink and a muted brass accent (#0f1d3a → #1c2f5e → #2f4a8a).
+
+---
+
+# v12 — real competition winners + announcement banner
+- **Winners carousel** (`components/home/showcase-hub.tsx`, `data/showcase.ts`): shows only the 3 real winners of the ACTUS Algorithmic Financial Contracts Use Case Competition (powered by apix), in order TOP 1 → TOP 2 → TOP 3. Each slide shows the official poster whole, plus the names, countries and tracks as text. The sample winners are removed.
+  - Images: `public/winners/top-1.jpg`, `top-2.jpg`, `top-3.jpg`, web copies of `ACTUS-Logos/HACK-img`. The source names run opposite to the ranks: "Winner -3.jpeg" is TOP 1 and "Winner -1.jpeg" is TOP 3.
+- **Gallery page, Announcements** (`data/gallery.ts`, `components/home/gallery.tsx`, `app/gallery/page.tsx`): the competition "Winners Announcement" banner is the first Announcements card, using a new poster layout that shows the whole poster beside the title. Image: `public/gallery/competition-winners-announcement.jpg`. It appears only on the /gallery page.
+- The web copies are resized to 1000×1000 with the thin white frame trimmed. The originals in `ACTUS-Logos/HACK-img` are unchanged.
+
+---
+
+# v13 — Winners Announcement card links to the LinkedIn post
+- `data/gallery.ts`: the `ann-winners` card links to https://lnkd.in/p/gU85yJkn (redirects to the LinkedIn post "Congratulations to the winners of ACTUS").
+- `components/home/gallery.tsx`: external links (http/https) open in a new tab (`target="_blank"`, `rel="noopener noreferrer"`). Poster cards show a "View announcement ↗" button. The poster card now fits at every width from 320 to 1920px: the poster sits beside the text from 640px up, and it's capped on small phones.
+- `app/gallery/page.tsx`: poster card grid sizing for the 640px layout.
